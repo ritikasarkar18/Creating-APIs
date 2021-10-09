@@ -9,6 +9,7 @@ import (
 	"log"
 	"net/http"
 	"strings"
+	"time"
 
 	"github.com/ritikasarkar18/Creating-APIs/cmd/simpleProjects/helper"
 	"github.com/ritikasarkar18/Creating-APIs/cmd/simpleProjects/models"
@@ -74,7 +75,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 		// Salt and hash the password using the bcrypt algorithm
 		// The second argument is the cost of hashing, which we arbitrarily set as 8 (this value can be more or less, depending on the computing power you wish to utilize)
-		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), 8)
+		hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(newUser.Password), 8)
 		newUser.Password = string(hashedPassword)
 
 		result, err := collection.InsertOne(context.TODO(), newUser)
@@ -144,6 +145,8 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.Unmarshal(reqBody, &newPost)
+
+		newPost.Timestamp = time.Now()
 
 		result, err := collection.InsertOne(context.TODO(), newPost)
 		if err != nil {

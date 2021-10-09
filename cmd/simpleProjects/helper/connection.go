@@ -13,6 +13,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+/*for thread safety*/
+//It is best practice to keep a client that is connected to MongoDB around so that the application
+//can make use of connection pooling - you don't want to open and close a connection for each query
+
 // ConnectDB : This is helper function to connect mongoDB
 // If you want to export your function. You must to start upper case function name. Otherwise you won't see your function when you import that on other class.
 func ConnectDB() *mongo.Collection {
