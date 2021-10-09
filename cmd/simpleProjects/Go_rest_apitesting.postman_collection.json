@@ -1,0 +1,148 @@
+{
+	"info": {
+		"_postman_id": "330b132b-ebbb-4c33-8960-ec2d36ed99d9",
+		"name": "Go_rest_apitesting",
+		"description": "Appointy tech task 29 hours(given) - 8 hrs (sleep) \nDate: 8-9/10/2021",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8000/users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Subir\",\r\n    \"Email\": \"subir@gmail.com\",\r\n    \"Password\": \"metoo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/users",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/posts/users/1",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/posts/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"posts",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/users/6161d581383ebd37e7626a5d",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/users/6161d581383ebd37e7626a5d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"6161d581383ebd37e7626a5d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/posts",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Caption\": \"MyJourney\",\r\n    \"ImageURL\": \"https://cdn.pixabay.com/photo/2015/04/23/22/00/tree-736885__480.jpg\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8000/posts",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/users/6161cb0b4f17105ee2775cbf",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/users/6161cb0b4f17105ee2775cbf",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"users",
+						"6161cb0b4f17105ee2775cbf"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8000/posts/users/6161cc254f17105ee2775cc0",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8000/posts/users/6161cc254f17105ee2775cc0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8000",
+					"path": [
+						"posts",
+						"users",
+						"6161cc254f17105ee2775cc0"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
