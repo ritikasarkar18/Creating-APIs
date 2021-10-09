@@ -6,7 +6,9 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 
+	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -15,8 +17,13 @@ import (
 // If you want to export your function. You must to start upper case function name. Otherwise you won't see your function when you import that on other class.
 func ConnectDB() *mongo.Collection {
 
+	err0 := godotenv.Load()
+	if err0 != nil {
+		log.Fatal("Error loading .env file")
+	}
+	uri := os.Getenv("MONGO_URI")
 	// Set client options
-	clientOptions := options.Client().ApplyURI("your_cluster_endpoint")
+	clientOptions := options.Client().ApplyURI(uri)
 
 	// Connect to MongoDB
 	client, err := mongo.Connect(context.TODO(), clientOptions)

@@ -2,6 +2,7 @@ package main
 
 import (
 	// "io"
+	"context"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -10,65 +11,19 @@ import (
 	"strconv"
 	"strings"
 	"time"
-	// "github.com/gorilla/mux"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-type user struct {
-	ID       int    `json:"ID"`
-	Name     string `json:"Name"`
-	Email    string `json:"Email"`
-	Password string `json:"Password"`
-}
+//Connection mongoDB with helper class
+collection := helper.ConnectDB()
 
-//dummy database
-type allUsers []user
-
-var (
-	users = allUsers{
-		{
-			ID:       1,
-			Name:     "Ritika",
-			Email:    "ritika@gmail.com",
-			Password: "32fchqsH72@j",
-		},
-	}
-	seq = 2
-)
-
-type post struct {
-	EID       int       `json:"EID"`
-	Caption   string    `json:"Caption"`
-	ImageURL  string    `json:"ImageURL"`
-	Timestamp time.Time `json:"Timestamp"`
-}
-
-//dummy database
-type allPosts []post
-
-var (
-	posts = allPosts{
-		// {
-		// 	EID:      1,
-		// 	Caption:  "MyJourney",
-		// 	ImageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png",
-		// 	Timestamp:  2014-05:28:06.801064-04:00,
-		// },
-		// {
-		// 	EID:      2,
-		// 	Caption:  "Car",
-		// 	ImageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png",
-		// 	Timestamp:  2014-05:28:06.801064-04:00,
-		// },
-	}
-
-	pseq = 3
-)
 
 // create user
 func createUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		w.Header().Set("Content-Type", "application/json")
-		var newUser user //another user of type user
+		var newUser User //another user of type user
 		reqBody, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			fmt.Fprintf(w, "Kindly enter data properly")
@@ -80,7 +35,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 
 		json.NewEncoder(w).Encode(newUser)
-		seq++
+		
 
 	} else {
 		http.Redirect(w, r, "/", http.StatusFound)
@@ -111,7 +66,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 func createPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
 		w.Header().Set("Content-Type", "application/json")
-		var newPost post //another post of type post
+		var newPost Post //another post of type post
 		reqBody, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			fmt.Fprintf(w, "Kindly enter data properly")
@@ -122,8 +77,6 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusCreated)
 
 		json.NewEncoder(w).Encode(newPost)
-
-		pseq++
 
 	} else {
 		http.Redirect(w, r, "/", http.StatusFound)
