@@ -14,6 +14,7 @@ import (
 	"github.com/ritikasarkar18/Creating-APIs/cmd/simpleProjects/models"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt" //for password hashing
 )
 
 //Connection mongoDB with helper class
@@ -70,6 +71,12 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.Unmarshal(reqBody, &newUser)
+
+		// Salt and hash the password using the bcrypt algorithm
+		// The second argument is the cost of hashing, which we arbitrarily set as 8 (this value can be more or less, depending on the computing power you wish to utilize)
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), 8)
+		newUser.Password = string(hashedPassword)
+
 		result, err := collection.InsertOne(context.TODO(), newUser)
 
 		if err != nil {
@@ -78,6 +85,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 		}
 
 		json.NewEncoder(w).Encode(result)
+
 		// users = append(users, newUser)
 
 		// w.WriteHeader(http.StatusCreated)
