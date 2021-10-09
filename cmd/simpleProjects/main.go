@@ -9,7 +9,7 @@ import (
 	"net/http"
 	"strconv"
 	"strings"
-	//"time"
+	"time"
 	// "github.com/gorilla/mux"
 )
 
@@ -36,10 +36,10 @@ var (
 )
 
 type post struct {
-	EID      int    `json:"EID"`
-	Caption  string `json:"Caption"`
-	ImageURL string `json:"ImageURL"`
-	//Timestamp time.Time `json:"Timestamp"`
+	EID       int       `json:"EID"`
+	Caption   string    `json:"Caption"`
+	ImageURL  string    `json:"ImageURL"`
+	Timestamp time.Time `json:"Timestamp"`
 }
 
 //dummy database
@@ -47,18 +47,18 @@ type allPosts []post
 
 var (
 	posts = allPosts{
-		{
-			EID:      1,
-			Caption:  "MyJourney",
-			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png",
-			//Timestamp:  2014-05:28:06.801064-04:00,
-		},
-		{
-			EID:      2,
-			Caption:  "Car",
-			ImageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png",
-			//Timestamp:  2014-05:28:06.801064-04:00,
-		},
+		// {
+		// 	EID:      1,
+		// 	Caption:  "MyJourney",
+		// 	ImageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png",
+		// 	Timestamp:  2014-05:28:06.801064-04:00,
+		// },
+		// {
+		// 	EID:      2,
+		// 	Caption:  "Car",
+		// 	ImageURL: "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/1200px-Image_created_with_a_mobile_phone.png",
+		// 	Timestamp:  2014-05:28:06.801064-04:00,
+		// },
 	}
 
 	pseq = 3
@@ -67,6 +67,7 @@ var (
 // create user
 func createUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
+		w.Header().Set("Content-Type", "application/json")
 		var newUser user //another user of type user
 		reqBody, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -75,6 +76,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 
 		json.Unmarshal(reqBody, &newUser)
 		users = append(users, newUser)
+
 		w.WriteHeader(http.StatusCreated)
 
 		json.NewEncoder(w).Encode(newUser)
@@ -88,6 +90,7 @@ func createUser(w http.ResponseWriter, r *http.Request) {
 //get an user, #####check mux
 func getUser(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
+		w.Header().Set("Content-Type", "application/json")
 		userID := strings.Split(r.URL.String()[len(`/users/`):], `/`)
 		//userID := mux.Vars(r)["id"]
 		uid, _ := strconv.Atoi(userID[0])
@@ -107,6 +110,7 @@ func getUser(w http.ResponseWriter, r *http.Request) {
 // The request data is not is a human-readable format hence we use the package ioutil to convert it into a slice.
 func createPost(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "POST" {
+		w.Header().Set("Content-Type", "application/json")
 		var newPost post //another post of type post
 		reqBody, err := ioutil.ReadAll(r.Body)
 		if err != nil {
@@ -129,6 +133,7 @@ func createPost(w http.ResponseWriter, r *http.Request) {
 //get a post, #####check mux
 func getOnePost(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
+		w.Header().Set("Content-Type", "application/json")
 		postID := strings.Split(r.URL.String()[len(`/posts/`):], `/`)
 		//r.URL.Path[len("/posts/{id}"):] --- wrong
 		//postID := mux.Vars(r)["id"]
@@ -148,7 +153,8 @@ func getOnePost(w http.ResponseWriter, r *http.Request) {
 //get all posts
 func getAllPosts(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "GET" {
-		userID := strings.Split(r.URL.String()[len(`/posts/users`):], `/`)
+		w.Header().Set("Content-Type", "application/json")
+		userID := strings.Split(r.URL.String()[len(`/posts/users/`):], `/`)
 		//r.URL.Path[len("/posts/{id}"):] --- wrong
 		//postID := mux.Vars(r)["id"]
 		upid, _ := strconv.Atoi(userID[0])
